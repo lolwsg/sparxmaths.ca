@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cartridge Index — 865 Games</title>
+<meta name="description" content="A browsable index of classic web and console games.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #150f22;
+    --bg-2: #1c1530;
+    --panel: #211a38;
+    --panel-2: #2a2145;
+    --line: #3a2f5c;
+    --text: #f2ecff;
+    --muted: #a89bcf;
+    --amber: #ffb703;
+    --amber-dim: #a97c1e;
+    --pink: #ff5d8f;
+    --teal: #4fe0c5;
+    --shadow: 0 10px 30px rgba(0,0,0,0.45);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(255,183,3,0.08), transparent 60%),
+      radial-gradient(1000px 500px at 100% 0%, rgba(255,93,143,0.08), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Space Grotesk', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  .display{
+    font-family:'Press Start 2P', monospace;
+    letter-spacing:0.5px;
+  }
+
+  /* ---------- Marquee hero ---------- */
+  .marquee{
+    position:relative;
+    padding:64px 24px 40px;
+    text-align:center;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+    background:
+      linear-gradient(180deg, rgba(255,183,3,0.06), transparent 70%),
+      var(--bg-2);
+  }
+  .marquee-bulbs{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background-image:
+      radial-gradient(circle, rgba(255,183,3,0.55) 2px, transparent 2.6px);
+    background-size:26px 26px;
+    background-position:13px 18px;
+    opacity:0.35;
+    mask-image:linear-gradient(180deg, black, transparent 85%);
+    animation:twinkle 3.4s linear infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:0.22;}
+    50%{opacity:0.42;}
+  }
+  .eyebrow{
+    display:inline-block;
+    font-size:10px;
+    color:var(--amber);
+    background:rgba(255,183,3,0.1);
+    border:1px solid var(--amber-dim);
+    padding:6px 12px;
+    border-radius:999px;
+    margin-bottom:22px;
+    letter-spacing:1px;
+  }
+  h1.title{
+    position:relative;
+    font-size:clamp(28px, 5.4vw, 56px);
+    line-height:1.35;
+    margin:0 0 14px;
+    color:var(--text);
+    text-shadow: 3px 3px 0 rgba(255,93,143,0.35);
+  }
+  h1.title span{color:var(--amber);}
+  .subtitle{
+    position:relative;
+    color:var(--muted);
+    max-width:560px;
+    margin:0 auto;
+    font-size:15px;
+    line-height:1.6;
+  }
+  .stat-row{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    gap:28px;
+    margin-top:34px;
+    flex-wrap:wrap;
+  }
+  .stat{
+    text-align:center;
+  }
+  .stat b{
+    display:block;
+    font-family:'Press Start 2P', monospace;
+    font-size:20px;
+    color:var(--teal);
+  }
+  .stat span{
+    font-size:11px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(21,15,34,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:16px 24px;
+  }
+  .controls-inner{
+    max-width:1080px;
+    margin:0 auto;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .search-wrap{
+    flex:1 1 260px;
+    position:relative;
+  }
+  .search-wrap svg{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    width:16px;
+    height:16px;
+    stroke:var(--muted);
+  }
+  #search{
+    width:100%;
+    padding:12px 14px 12px 38px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--text);
+    font-family:inherit;
+    font-size:14px;
+    outline:none;
+  }
+  #search:focus{border-color:var(--amber);}
+  #search::placeholder{color:var(--muted);}
+
+  .chips{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .chip{
+    font-size:12px;
+    padding:9px 13px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--muted);
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .15s ease;
+  }
+  .chip:hover{border-color:var(--amber-dim); color:var(--text);}
+  .chip.active{
+    background:var(--amber);
+    border-color:var(--amber);
+    color:#1c1300;
+    font-weight:600;
+  }
+  #result-count{
+    font-size:12px;
+    color:var(--muted);
+    white-space:nowrap;
+    padding-left:4px;
+  }
+
+  /* ---------- Layout ---------- */
+  main{
+    max-width:1080px;
+    margin:0 auto;
+    padding:36px 24px 100px;
+  }
+  .section{
+    margin-bottom:44px;
+  }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:16px;
+    padding-bottom:10px;
+    border-bottom:1px dashed var(--line);
+  }
+  .section-head h2{
+    font-family:'Press Start 2P', monospace;
+    font-size:13px;
+    margin:0;
+    color:var(--pink);
+  }
+  .section-head .count{
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(190px, 1fr));
+    gap:12px;
+  }
+
+  .cart{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    gap:10px;
+    padding:14px 14px 12px;
+    min-height:84px;
+    background:linear-gradient(180deg, var(--panel-2), var(--panel));
+    border:1px solid var(--line);
+    border-top:4px solid var(--amber-dim);
+    border-radius:8px;
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    transition:transform .12s ease, border-color .12s ease;
+  }
+  .cart:hover{
+    transform:translateY(-3px);
+    border-top-color:var(--amber);
+  }
+  .cart:nth-child(4n+1){border-top-color:#4fe0c5;}
+  .cart:nth-child(4n+1):hover{border-top-color:#7dffe6;}
+  .cart:nth-child(4n+2){border-top-color:#ff5d8f;}
+  .cart:nth-child(4n+2):hover{border-top-color:#ff9fbb;}
+  .cart:nth-child(4n+3){border-top-color:#ffb703;}
+  .cart:nth-child(4n){border-top-color:#8c7bff;}
+  .cart:nth-child(4n):hover{border-top-color:#b3a6ff;}
+
+  .cart-name{
+    font-size:13.5px;
+    font-weight:600;
+    line-height:1.35;
+  }
+  .cart-file{
+    font-size:10px;
+    color:var(--muted);
+    font-family:monospace;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .empty-state{
+    text-align:center;
+    padding:80px 20px;
+    color:var(--muted);
+  }
+  .empty-state .display{
+    color:var(--amber);
+    font-size:14px;
+    margin-bottom:14px;
+    display:block;
+  }
+
+  footer{
+    text-align:center;
+    padding:30px 24px 60px;
+    color:var(--muted);
+    font-size:12px;
+    border-top:1px solid var(--line);
+  }
+  footer code{
+    background:var(--panel);
+    padding:2px 6px;
+    border-radius:4px;
+    border:1px solid var(--line);
+  }
+
+  #back-to-top{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:42px;
+    height:42px;
+    border-radius:10px;
+    background:var(--amber);
+    color:#1c1300;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    box-shadow:var(--shadow);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease;
+    z-index:30;
+  }
+  #back-to-top.show{opacity:1;pointer-events:auto;}
+
+  @media (max-width:520px){
+    .marquee{padding:48px 16px 32px;}
+    .stat-row{gap:18px;}
+    .grid{grid-template-columns:repeat(auto-fill, minmax(140px,1fr));}
+  }
+</style>
+</head>
+<body>
+
+<header class="marquee">
+  <div class="marquee-bulbs" aria-hidden="true"></div>
+  <span class="eyebrow display">◆ NOW LOADING ◆</span>
+  <h1 class="title">THE <span>CARTRIDGE</span> INDEX</h1>
+  <p class="subtitle">A hand-catalogued shelf of browser games and classic console titles — every cartridge labelled, sorted, and one click from booting up.</p>
+  <div class="stat-row">
+    <div class="stat"><b id="stat-total">0</b><span>Total Titles</span></div>
+    <div class="stat"><b id="stat-web">0</b><span>Browser Games</span></div>
+    <div class="stat"><b id="stat-platforms">0</b><span>Console Shelves</span></div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="search" type="text" placeholder="Search the shelf… try “mario” or “tank”">
+    </div>
+    <div class="chips" id="platform-chips"></div>
+    <div id="result-count"></div>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<footer>
+  Built as a static index — game files aren't bundled here. Drop each title's <code>.html</code> file into a <code>/games</code> folder next to this page (matching the filenames shown on every cartridge) and the links will boot straight up. See <code>README.md</code> for the full setup.
+</footer>
+
+<div id="back-to-top" title="Back to top">↑</div>
+
+<script src="data.js"></script>
+<script>
+(function(){
+  const web = GAME_DATA.web.map(g => ({...g, platform: "WEB", platformLabel: "Browser"}));
+  const consoleGames = [];
+  GAME_DATA.consoles.forEach(section => {
+    section.games.forEach(g => consoleGames.push({...g, platform: section.id, platformLabel: section.label}));
+  });
+  const ALL = web.concat(consoleGames);
+
+  const platforms = [{id:"ALL", label:"All Platforms"}, {id:"WEB", label:"Browser"}]
+    .concat(GAME_DATA.consoles.map(s => ({id:s.id, label:s.label})));
+
+  document.getElementById('stat-total').textContent = ALL.length;
+  document.getElementById('stat-web').textContent = web.length;
+  document.getElementById('stat-platforms').textContent = GAME_DATA.consoles.length;
+
+  const chipsEl = document.getElementById('platform-chips');
+  let activePlatform = "ALL";
+  platforms.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = 'chip' + (p.id === 'ALL' ? ' active' : '');
+    chip.textContent = p.label;
+    chip.dataset.id = p.id;
+    chip.addEventListener('click', () => {
+      activePlatform = p.id;
+      [...chipsEl.children].forEach(c => c.classList.toggle('active', c === chip));
+      render();
+    });
+    chipsEl.appendChild(chip);
+  });
+
+  const mainEl = document.getElementById('main');
+  const searchEl = document.getElementById('search');
+  const countEl = document.getElementById('result-count');
+
+  function groupByPlatform(list){
+    const order = ["WEB"].concat(GAME_DATA.consoles.map(s => s.id));
+    const map = {};
+    list.forEach(g => {
+      if(!map[g.platform]) map[g.platform] = [];
+      map[g.platform].push(g);
+    });
+    return order.filter(id => map[id]).map(id => ({id, label: id === "WEB" ? "Browser" : (map[id][0].platformLabel), games: map[id]}));
+  }
+
+  function render(){
+    const q = searchEl.value.trim().toLowerCase();
+    let filtered = ALL.filter(g => {
+      const matchesPlatform = activePlatform === "ALL" || g.platform === activePlatform;
+      const matchesQuery = !q || g.name.toLowerCase().includes(q) || g.file.toLowerCase().includes(q);
+      return matchesPlatform && matchesQuery;
+    });
+
+    countEl.textContent = filtered.length + (filtered.length === 1 ? " title" : " titles");
+
+    mainEl.innerHTML = "";
+
+    if(filtered.length === 0){
+      mainEl.innerHTML = '<div class="empty-state"><span class="display">GAME OVER</span>No cartridges match that search. Try another title.</div>';
+      return;
+    }
+
+    const groups = groupByPlatform(filtered);
+    groups.forEach(group => {
+      const section = document.createElement('section');
+      section.className = 'section';
+
+      const head = document.createElement('div');
+      head.className = 'section-head';
+      head.innerHTML = `<h2>${group.label}</h2><span class="count">${group.games.length} title${group.games.length===1?"":"s"}</span>`;
+      section.appendChild(head);
+
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+
+      group.games.forEach(g => {
+        const card = document.createElement('a');
+        card.className = 'cart';
+        card.href = 'games/' + g.file;
+        card.target = '_blank';
+        card.rel = 'noopener';
+        card.innerHTML = `<div class="cart-name">${escapeHtml(g.name)}</div><div class="cart-file">${escapeHtml(g.file)}</div>`;
+        grid.appendChild(card);
+      });
+
+      section.appendChild(grid);
+      mainEl.appendChild(section);
+    });
+  }
+
+  function escapeHtml(str){
+    return str.replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
+  searchEl.addEventListener('input', render);
+
+  const backTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', () => {
+    backTop.classList.toggle('show', window.scrollY > 600);
+  });
+  backTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+  render();
+})();
+</script>
+
+</body>
+</html>
